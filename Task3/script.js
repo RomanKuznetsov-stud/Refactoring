@@ -1,4 +1,3 @@
-
 class Student {
     constructor(lastName, firstName, math, history, js) {
         this.lastName = lastName;
@@ -59,11 +58,6 @@ class StylesTable extends ListOfStudents {
         return this.getStyles() + super.getTableList();
     }
 
-    getAvg() {
-        this.students.forEach(student => {
-            student.average = student.calculateAverage();
-        });
-    }
 
     getTotalAvg() {
         const totalAvg = (
