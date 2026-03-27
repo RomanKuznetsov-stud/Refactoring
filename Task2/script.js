@@ -5,49 +5,58 @@ document.addEventListener("DOMContentLoaded", () => {
     const thumbnailsDiv = document.getElementById("thumbnails");
     const fullImage = document.getElementById("fullImage");
 
+    const parseInput = (input) => {
+        if (input.startsWith("[") && input.endsWith("]")) {
+            return JSON.parse(input);
+        }
+        return input.split(",").map(file => file.trim());
+    };
+
+    const updateStatus = (message, className) => {
+        statusDiv.textContent = message;
+        statusDiv.className = className;
+    };
+
+    const clearUI = () => {
+        thumbnailsDiv.innerHTML = "";
+        fullImage.src = "";
+    };
+
+    const renderImages = (fileArray) => {
+        fileArray.forEach((file) => {
+            const imgPreview = document.createElement("div");
+            imgPreview.className = "image-preview";
+
+            const img = document.createElement("img");
+            img.src = file.trim();
+            img.alt = file;
+
+            img.addEventListener("click", () => {
+                fullImage.src = file.trim();
+            });
+
+            imgPreview.appendChild(img);
+            thumbnailsDiv.appendChild(imgPreview);
+        });
+    };
+
     showButton.addEventListener("click", () => {
         const input = jsonInput.value.trim();
 
         try {
-            let fileArray;
-
-            if (input.startsWith("[") && input.endsWith("]")) {
-                fileArray = JSON.parse(input);
-            } else {
-
-                fileArray = input.split(",").map(file => file.trim());
-            }
+            const fileArray = parseInput(input);
 
             if (!Array.isArray(fileArray)) {
                 throw new Error("Input is not a valid JSON array.");
             }
 
-            statusDiv.textContent = "OK";
-            statusDiv.className = "ok";
+            updateStatus("OK", "ok");
+            clearUI();
+            renderImages(fileArray);
 
-            thumbnailsDiv.innerHTML = "";
-            fullImage.src = "";
-
-            fileArray.forEach((file) => {
-                const imgPreview = document.createElement("div");
-                imgPreview.className = "image-preview";
-
-                const img = document.createElement("img");
-                img.src = file.trim();
-                img.alt = file;
-
-                img.addEventListener("click", () => {
-                    fullImage.src = file.trim();
-                });
-
-                imgPreview.appendChild(img);
-                thumbnailsDiv.appendChild(imgPreview);
-            });
         } catch (error) {
-            statusDiv.textContent = "Невірний формат JSON";
-            statusDiv.className = "error";
-            thumbnailsDiv.innerHTML = "";
-            fullImage.src = "";
+            updateStatus("Невірний формат JSON", "error");
+            clearUI();
         }
     });
 });
