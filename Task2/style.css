@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+#status {
+    font-weight: bold;
+    margin: 10px 0;
+}
+#status.ok {
+    color: green;
+}
+#status.error {
+    color: red;
+}
+.image-preview {
+    display: inline-block;
+    margin: 5px;
+}
+.image-preview img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+#fullImageContainer {
+    margin-top: 20px;
+    width: 300px;
+    height: 300px;
+    border: 2px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+#fullImageContainer img {
+    max-width: 100%;
+    max-height: 100%;
+}

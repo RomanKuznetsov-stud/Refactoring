@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+    gap: 5px;
+    margin-top: 20px;
+}
+.square {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    background-color: white;
+}
+.button-container {
+    margin-bottom: 10px;
+}
