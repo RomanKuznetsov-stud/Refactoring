@@ -1,28 +1,29 @@
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("myForm");
+
+    const setInputValue = (input, value) => {
+        if (input.type === "checkbox") {
+            input.checked = value;
+        } else if (input.type === "radio") {
+            input.checked = (input.value === value);
+        } else {
+            input.value = value;
+        }
+    };
+
+    const getInputValue = (input) => {
+        if (input.type === "checkbox") return input.checked;
+        if (input.type === "radio") return input.checked ? input.value : null;
+        return input.value;
+    };
+
     const loadFormData = () => {
         const formData = JSON.parse(localStorage.getItem("formData")) || {};
 
         for (const [key, value] of Object.entries(formData)) {
             const input = form.elements[key];
-
             if (!input) continue;
-
-            switch (input.type) {
-                case "checkbox":
-                    input.checked = value;
-                    break;
-                case "radio":
-                    if (input.value === value) {
-                        input.checked = true;
-                    }
-                    break;
-                case "select-one":
-                    input.value = value;
-                    break;
-                default:
-                    input.value = value;
-            }
+            setInputValue(input, value);
         }
     };
 
@@ -31,18 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         Array.from(form.elements).forEach(input => {
             if (!input.name) return;
-
-            switch (input.type) {
-                case "checkbox":
-                    formData[input.name] = input.checked;
-                    break;
-                case "radio":
-                    if (input.checked) {
-                        formData[input.name] = input.value;
-                    }
-                    break;
-                default:
-                    formData[input.name] = input.value;
+            const val = getInputValue(input);
+            if (val !== null) {
+                formData[input.name] = val;
             }
         });
 
