@@ -1,7 +1,9 @@
-
 class Shape {
+    static MAX_PAINT = 100;
+    static PAINT_PER_DRAW = 10;
+    static MAX_STEPS = 10;
 
-    static total = 100;
+    static total = Shape.MAX_PAINT;
     static step = 0;
 
     constructor(size) {
@@ -9,7 +11,7 @@ class Shape {
     }
 
     static fill() {
-        Shape.total = 100;
+        Shape.total = Shape.MAX_PAINT;
         Shape.step = 0;
         alert("Paint refilled!");
     }
@@ -21,17 +23,18 @@ class Shape {
             return null;
         }
 
-        Shape.total -= 10;
+        Shape.total -= Shape.PAINT_PER_DRAW;
         const square = document.createElement("div");
         square.classList.add("square");
 
         const r = 255;
-        const g = Math.min(255, Shape.step * 25.5);
-        const b = Math.min(255, Shape.step * 25.5);
+        const colorStep = 255 / Shape.MAX_STEPS;
+        const g = Math.min(255, Shape.step * colorStep);
+        const b = Math.min(255, Shape.step * colorStep);
 
         square.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 
-        Shape.step = Math.min(Shape.step + 1, 10);
+        Shape.step = Math.min(Shape.step + 1, Shape.MAX_STEPS);
 
         return square;
     }
@@ -42,11 +45,6 @@ const fillButton = document.getElementById("fillButton");
 const shapesContainer = document.getElementById("shapes");
 
 drawButton.addEventListener("click", () => {
-
-    if (Shape.total <= 0) {
-        alert("No paint left! Please refill.");
-        return;
-    }
 
     const shape = new Shape(30);
     const square = shape.draw();
